@@ -99,6 +99,7 @@ PHP_MINIT_FUNCTION(first_ext)
 	/* If you have INI entries, uncomment these lines 
 	REGISTER_INI_ENTRIES();
 	*/
+	REGISTER_STRING_CONSTANT("FEXTAUTHOR","<a href=\"http://istrone.com\">istrone</a>",CONST_CS | CONST_PERSISTENT);
 	return SUCCESS;
 }
 /* }}} */
