@@ -43,8 +43,6 @@ const zend_function_entry first_ext_functions[] = {
 	PHP_FE(calcpi,	NULL)
 	PHP_FE(reverse,	NULL)
 	PHP_FE(uniquechars,	NULL)
-	PHP_FE(characters,	NULL)
-	PHP_FE(,	NULL)
 	PHP_FE_END	/* Must be the last line in first_ext_functions[] */
 };
 /* }}} */
@@ -266,29 +264,7 @@ PHP_FUNCTION(uniquechars)
 	}
 	efree(workbuf);
 }
-/* }}} */
 
-/* {{{ proto  characters()
-   in the input string */
-PHP_FUNCTION(characters)
-{
-	if (zend_parse_parameters_none() == FAILURE) {
-		return;
-	}
-	php_error(E_WARNING, "characters: not yet implemented");
-}
-/* }}} */
-
-/* {{{ proto  ()
-    */
-PHP_FUNCTION()
-{
-	if (zend_parse_parameters_none() == FAILURE) {
-		return;
-	}
-	php_error(E_WARNING, ": not yet implemented");
-}
-/* }}} */
 
 
 /*
