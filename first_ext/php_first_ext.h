@@ -49,6 +49,8 @@ PHP_FUNCTION(uniquechars);
 PHP_FUNCTION(characters);
 PHP_FUNCTION();
 
+ZEND_METHOD(myclass,__construct);
+ZEND_METHOD(myclass,public_method);
 /* 
   	Declare any global variables you may need between the BEGIN
 	and END macros here:     

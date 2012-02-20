@@ -85,10 +85,53 @@ static void php_first_ext_init_globals(zend_first_ext_globals *first_ext_globals
 }
 /* }}} */
 
+
+/*
+  register a class 
+*/
+
+zend_class_entry *myclass_ce;
+
+static zend_function_entry myclass_method[] = {
+   ZEND_ME(myclass,public_method,NULL,ZEND_ACC_PUBLIC)
+   ZEND_ME(myclass,__construct,NULL,ZEND_ACC_PUBLIC|ZEND_ACC_CTOR)
+   {NULL,NULL,NULL}
+};
+
+ZEND_METHOD(myclass,public_method) {
+   php_printf("this is pulic method to be called!");
+}
+
+ZEND_METHOD(myclass,__construct) {
+   php_printf("this is construct method!");
+}
+
+
+/**
+* register an interface
+*/
+
+zend_class_entry *i_myinterface_ce;
+
+static zend_function_entry i_myinterface_method[] = {
+   ZEND_ABSTRACT_ME(i_myinterface,hello,NULL)
+   {NULL,NULL,NULL}
+};
+
 /* {{{ PHP_MINIT_FUNCTION
 */
 PHP_MINIT_FUNCTION(first_ext)
 {
+	
+	zend_class_entry ce;
+	INIT_CLASS_ENTRY(ce,"myclass",myclass_method);
+	myclass_ce = zend_register_internal_class(&ce TSRMLS_CC);
+	zend_declare_property_null(myclass_ce,"public_var",strlen("public_var"),ZEND_ACC_PUBLIC TSRMLS_CC);
+	
+	zend_class_entry ice;
+	INIT_CLASS_ENTRY(ice,"i_myinterface",i_myinterface_method);
+	i_myinterface_ce = zend_register_internal_interface(&ice TSRMLS_CC);
+
 	REGISTER_INI_ENTRIES();
 	REGISTER_STRING_CONSTANT("FEXTAUTHOR","<a href=\"http://istrone.com\">istrone</a>",CONST_CS | CONST_PERSISTENT);
 	FIRST_EXT_G(global_value)=300;
