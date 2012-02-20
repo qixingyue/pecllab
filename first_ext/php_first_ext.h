@@ -52,12 +52,13 @@ PHP_FUNCTION();
 /* 
   	Declare any global variables you may need between the BEGIN
 	and END macros here:     
-
+*/
 ZEND_BEGIN_MODULE_GLOBALS(first_ext)
 	long  global_value;
 	char *global_string;
 ZEND_END_MODULE_GLOBALS(first_ext)
-*/
+
+
 
 /* In every utility function you add that needs to use variables 
    in php_first_ext_globals, call TSRMLS_FETCH(); after declaring other 

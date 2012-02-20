@@ -27,9 +27,7 @@
 #include "ext/standard/info.h"
 #include "php_first_ext.h"
 
-/* If you declare any globals in php_first_ext.h uncomment this:
 ZEND_DECLARE_MODULE_GLOBALS(first_ext)
-*/
 
 /* True global resources - no need for thread safety here */
 static int le_first_ext;
@@ -73,33 +71,27 @@ ZEND_GET_MODULE(first_ext)
 
 /* {{{ PHP_INI
  */
-/* Remove comments and fill if you need to have entries in php.ini
 PHP_INI_BEGIN()
-    STD_PHP_INI_ENTRY("first_ext.global_value",      "42", PHP_INI_ALL, OnUpdateLong, global_value, zend_first_ext_globals, first_ext_globals)
-    STD_PHP_INI_ENTRY("first_ext.global_string", "foobar", PHP_INI_ALL, OnUpdateString, global_string, zend_first_ext_globals, first_ext_globals)
+   PHP_INI_ENTRY("first_ext.greeting","Helloworld",PHP_INI_ALL,NULL)
 PHP_INI_END()
-*/
 /* }}} */
 
 /* {{{ php_first_ext_init_globals
  */
-/* Uncomment this function if you have INI entries
 static void php_first_ext_init_globals(zend_first_ext_globals *first_ext_globals)
 {
 	first_ext_globals->global_value = 0;
 	first_ext_globals->global_string = NULL;
 }
-*/
 /* }}} */
 
 /* {{{ PHP_MINIT_FUNCTION
- */
+*/
 PHP_MINIT_FUNCTION(first_ext)
 {
-	/* If you have INI entries, uncomment these lines 
 	REGISTER_INI_ENTRIES();
-	*/
 	REGISTER_STRING_CONSTANT("FEXTAUTHOR","<a href=\"http://istrone.com\">istrone</a>",CONST_CS | CONST_PERSISTENT);
+	FIRST_EXT_G(global_value)=300;
 	return SUCCESS;
 }
 /* }}} */
@@ -108,9 +100,7 @@ PHP_MINIT_FUNCTION(first_ext)
  */
 PHP_MSHUTDOWN_FUNCTION(first_ext)
 {
-	/* uncomment this line if you have INI entries
 	UNREGISTER_INI_ENTRIES();
-	*/
 	return SUCCESS;
 }
 /* }}} */
@@ -141,9 +131,7 @@ PHP_MINFO_FUNCTION(first_ext)
 	php_info_print_table_header(2, "first_ext support", "enabled");
 	php_info_print_table_end();
 
-	/* Remove comments if you have entries in php.ini
 	DISPLAY_INI_ENTRIES();
-	*/
 }
 /* }}} */
 
@@ -179,6 +167,9 @@ PHP_FUNCTION(confirm_first_ext_compiled)
    Calculate Pi */
 PHP_FUNCTION(calcpi)
 {
+	zend_printf("%ld",FIRST_EXT_G(global_value));
+	const char *greeting = INI_STR("first_ext.greeting");
+	zend_printf("%s<br>",greeting);
 	int argc = ZEND_NUM_ARGS();
 	long iterations;
 	int index, hits = 0;
