@@ -1,0 +1,13 @@
+// $Id$
+// vim:ft=javascript
+
+// If your extension references something external, use ARG_WITH
+// ARG_WITH("tmpy", "for tmpy support", "no");
+
+// Otherwise, use ARG_ENABLE
+// ARG_ENABLE("tmpy", "enable tmpy support", "no");
+
+if (PHP_TMPY != "no") {
+	EXTENSION("tmpy", "tmpy.c");
+}
+
