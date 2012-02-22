@@ -138,20 +138,26 @@ PHP_MINFO_FUNCTION(tmpy)
 /**
 * parse a line to an php array item
 */
-zval *parseLine(char *line,int l){
+zval *parseLine(char *line,int parseLength){
    zval *resArray;
-   char *tmp=line,keys[3][8]={"yin","shengmu","yunmu"},*bp= (char *)emalloc(sizeof(char)*l),*bpp=bp;
+   char *tmp=line,keys[3][8]={"yin","shengmu","yunmu"},*bp= (char *)emalloc(sizeof(char)*6),*bpp=bp;
    int f=0;
    MAKE_STD_ZVAL(resArray);
    array_init(resArray);		//make resArray to an array
-   memset(bp,0,l);
+   if(parseLength==0) {
+     add_assoc_string(resArray,"yin",line,1);
+     add_assoc_string(resArray,"shengmu",line,1);
+     add_assoc_string(resArray,"yunmu",line,1);
+     return resArray;
+   }
+   memset(bp,0,6);
    while(tmp++ && *tmp!='\0'){
 	if(*tmp == ',' ) {
            f++;
 	   if(f>=2 && f<=4) {
 	      add_assoc_string(resArray,keys[f-2],bp,1);
 	   }
-           memset(bp,0,l);
+           memset(bp,0,6);
 	   bpp = bp;
 	} else {
 	   *bpp++ = *tmp;
@@ -175,7 +181,7 @@ PHP_FUNCTION(tmpy_getpy)
 {
 	char *hz = NULL;
 	int argc = ZEND_NUM_ARGS();
-	int hz_len;
+	int hz_len,find_flag=0;
 
 	if (zend_parse_parameters(argc TSRMLS_CC, "s", &hz, &hz_len) == FAILURE) 
 		return;
@@ -192,8 +198,12 @@ PHP_FUNCTION(tmpy_getpy)
 	while(php_stream_gets(stream,line,30)){
 	     if(strncmp(line,hz,hz_len)==0) {
 		add_next_index_zval(return_value,parseLine(line,strlen(line)));
+		find_flag=1;
 	     }
-		memset(line,0,30);
+	    memset(line,0,30);
+	}
+	if( find_flag == 0 ){
+	   add_next_index_zval(return_value,parseLine(hz,0));
 	}
 	php_stream_close(stream);
 	efree(line);
